@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brandzooka Screening Room — APRD 3002 CTV Lab</title>
+<meta name="description" content="Watch 115 real video ad creatives, read their campaign metrics, judge their targeting, and derive creative best practices.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css?v=38">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5a623'/%3E%3Cpath d='M12 10l12 6-12 6z' fill='%23101014'/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="course-tag">APRD 3002 · CTV Lab · Tue 10/13</div>
+      <h1>Brandzooka <span class="h1-accent">Screening Room</span></h1>
+    </div>
+    <div class="topbar-side">
+      <button class="btn btn-primary reel-btn" id="reelBtn" type="button">▶ Play reel</button>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar" id="toolbar">
+  <div class="toolbar-row">
+    <input class="search" id="search" type="search" placeholder="Search titles, advertisers, domains…" aria-label="Search flights" autocomplete="off">
+    <select id="sortSel" aria-label="Sort flights">
+      <option value="completion-desc">Sort: Completion ↓</option>
+      <option value="ctr-desc">Sort: Click-through ↓</option>
+      <option value="viewability-desc">Sort: Viewability ↓</option>
+      <option value="impressions-desc">Sort: Impressions ↓</option>
+      <option value="clicks-desc">Sort: Clicks ↓</option>
+      <option value="delivery-desc">Sort: Delivery vs plan ↓</option>
+      <option value="spent-desc">Sort: Spend ↓</option>
+      <option value="duration-asc">Sort: Shortest creative</option>
+      <option value="duration-desc">Sort: Longest creative</option>
+      <option value="title-asc">Sort: Title A–Z</option>
+    </select>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="Filters">
+    <div class="side-head"><h2>Filters</h2><button class="btn btn-ghost side-clear" id="clearFilters" type="button">Clear all</button></div>
+    <section class="side-section">
+      <h3>Content theme</h3>
+      <div class="theme-list" id="themeList"></div>
+    </section>
+    <section class="side-section">
+      <h3>Format &amp; destination</h3>
+      <div class="wall" id="formatWall"></div>
+    </section>
+    <section class="side-section">
+      <h3>Target audience</h3>
+      <div class="wall" id="audWall"></div>
+    </section>
+    <section class="side-section">
+      <h3>Schedule</h3>
+      <div class="wall" id="schedWall"></div>
+    </section>
+    <section class="side-section">
+      <h3>Jigsaw slice</h3>
+      <select id="sliceSel" aria-label="Jigsaw slice"><option value="">All slices (1–6)</option><option value="1">Slice 1</option><option value="2">Slice 2</option><option value="3">Slice 3</option><option value="4">Slice 4</option><option value="5">Slice 5</option><option value="6">Slice 6</option></select>
+    </section>
+  </aside>
+  <main>
+    <div class="goaltabs" id="goalTabs" role="tablist" aria-label="Filter by campaign goal"></div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </main>
+</div>
+
+<footer class="pagefoot">
+  <div class="foot-grid">
+    <div>
+      <h3>Read the numbers honestly</h3>
+      <ul>
+        <li><strong>Completion</strong> = share of impressions watched to the end (0–100).</li>
+        <li><strong>CTR</strong> = clicks ÷ impressions, on a 0–100 scale here.</li>
+        <li><strong>Viewability</strong> = share counted as viewable (0–100). A measured view is not attention — it only means the ad was on screen long enough to count.</li>
+        <li><strong>Delivery</strong> = actual impressions ÷ the platform's projection. Over 100 means it over-delivered.</li>
+        <li><strong>Win rate</strong> = share of auctions this bidder won. Higher usually means less picky bidding.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>About this data</h3>
+      <ul>
+        <li>115 self-serve video creatives in 148 flights, Jan–Sep 2017, from the Brandzooka platform. One tile = one creative; multi-flight tiles show honest aggregates (counts summed, CTR recomputed from totals, completion/viewability/win rate impression-weighted).</li>
+        <li>Some audience values are <strong>hashed codes</strong> (e.g. place IDs). They prove targeting existed but can't be read — the page labels them instead of guessing.</li>
+        <li>Daypart grids show active hours across a 7-day flight week. Weekday mapping is unverified, so days are numbered, not named.</li>
+        <li>Landing-page links are 2017 originals. Many are dead; they still show what the click was selling.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<div class="overlay" id="detailOverlay" hidden>
+  <div class="detail" role="dialog" aria-modal="true" aria-label="Flight screening">
+    <div class="detail-head">
+      <div class="detail-nav">
+        <button class="btn btn-ghost" id="prevBtn" type="button">← Prev</button>
+        <button class="btn btn-ghost" id="nextBtn" type="button">Next →</button>
+      </div>
+      <div class="detail-id" id="detailId"></div>
+      <button class="btn btn-ghost" id="closeBtn" type="button">Close ✕</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+</div>
+
+<div class="overlay reel-overlay" id="reelOverlay" hidden>
+  <div class="reel" role="dialog" aria-modal="true" aria-label="Video reel">
+    <div class="reel-stage" id="reelStage">
+      <video id="reelVideo" playsinline preload="auto"></video>
+      <div class="reel-topfade">
+        <div class="reel-now" id="reelTitle"></div>
+        <div class="reel-count" id="reelCount"></div>
+      </div>
+      <button class="reel-close" id="reelClose" type="button" aria-label="Close reel">✕</button>
+      <div class="skipbox" id="skipBox" hidden></div>
+      <div class="reel-controls">
+        <input class="reel-scrub" id="reelScrub" type="range" min="0" max="1000" value="0" aria-label="Seek">
+        <div class="reel-buttons">
+          <button class="reel-btn-ctl" id="reelPrev" type="button" aria-label="Previous video" title="Previous (←)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+          </button>
+          <button class="reel-btn-ctl" id="reelPlay" type="button" aria-label="Play or pause" title="Play/pause (space)">
+            <svg id="reelPlayIcon" viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="reel-btn-ctl" id="reelNext" type="button" aria-label="Next video" title="Next (→)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+          </button>
+          <button class="reel-btn-ctl" id="reelMute" type="button" aria-label="Mute or unmute" title="Mute (m)">
+            <svg id="reelMuteIcon" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+          </button>
+          <span class="reel-time" id="reelTime">0:00 / 0:00</span>
+          <span class="reel-spacer"></span>
+          <button class="reel-btn-ctl" id="reelFull" type="button" aria-label="Fullscreen" title="Fullscreen (f)">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M4 4h6v2H6v4H4V4zm16 0v6h-2V6h-4V4h6zM4 14h2v4h4v2H4v-6zm16 6h-6v-2h4v-4h2v6z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <aside class="reel-queue">
+      <h3>Up next</h3>
+      <div class="reel-queue-list" id="reelQueue"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="assets/app.js?v=38"></script>
+</body>
+</html>
